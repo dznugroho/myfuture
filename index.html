@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Untukmu, Wendy Indira</title>
     <!-- Menggunakan font romantis dari Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -158,14 +158,14 @@
 
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 40px 30px;
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.6);
-            max-width: 500px;
+            max-width: 550px; /* Diperlebar sedikit karena teksnya cukup panjang */
             width: 100%; /* Dibuat 100% agar fleksibel dengan padding body */
             position: relative; /* Ini penting agar tombol No terkurung di dalam sini */
             z-index: 10;
@@ -222,19 +222,21 @@
 
         p.message {
             color: #444;
-            font-size: 1.05rem;
-            line-height: 1.7;
-            margin-bottom: 30px;
-            font-weight: 300;
-            text-align: center; /* Dibuat center agar lebih rapi di HP */
+            font-size: 0.95rem; /* Disesuaikan sedikit agar teks panjang muat dengan rapi */
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 400;
+            text-align: center; 
             width: 100%;
         }
 
         .question {
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 1.2rem; /* Disesuaikan untuk pertanyaan yang lebih panjang */
+            line-height: 1.5;
             color: #d81b60;
             margin-bottom: 35px;
+            padding: 0 10px;
         }
 
         .buttons {
@@ -340,8 +342,8 @@
         @media (max-width: 480px) {
             .container { padding: 30px 20px; }
             h1 { font-size: 2.5rem; }
-            p.message { font-size: 0.95rem; line-height: 1.6; }
-            .question { font-size: 1.3rem; margin-bottom: 25px; }
+            p.message { font-size: 0.9rem; line-height: 1.5; }
+            .question { font-size: 1.1rem; margin-bottom: 25px; }
             button { padding: 10px 25px; font-size: 1.1rem; }
             .couple-photo { max-width: 220px; height: 300px; }
             .music-btn { bottom: 15px; right: 15px; width: 45px; height: 45px; font-size: 1.2rem; }
@@ -392,12 +394,14 @@
         <!-- Dekorasi Buket Bunga -->
         <div class="bouquet-top">💐</div>
 
-        <h1>Halo Wendy Indira</h1>
+        <h1>Halo, Wendy Indira...</h1>
         <p class="message">
-            Di antara miliaran senyum di dunia, hanya milikmu yang membuat duniaku terasa sempurna.<br><br>
-            Aku tidak ingin lagi sekadar menjadi bagian dari harimu. Aku ingin menjadi rumah tempatmu pulang, untuk hari ini, esok, dan selamanya.
+            Dulu kita satu almamater — tapi entah kenapa kita tidak pernah benar-benar bertemu. Mungkin memang belum waktunya. Dan sekarang, setelah waktu itu akhirnya datang, aku mulai mengerti kenapa.<br><br>
+            Belum lama kita saling mengenal. Tapi dalam waktu yang singkat itu, aku menemukan sesuatu yang sulit aku abaikan — cara kamu berbicara, cara kamu bersikap, sesuatu dalam dirimu yang membuat aku ingin terus mengenalmu lebih jauh.<br><br>
+            Aku tidak ingin sekadar hadir di harimu lalu pergi begitu saja. Aku datang dengan niat yang serius — bukan untuk bermain-main, tapi untuk mengenalmu dengan cara yang benar, menuju sesuatu yang halal dan diridhai Allah.<br><br>
+            Karena bagiku, kamu bukan sekadar seseorang yang menarik. Kamu adalah seseorang yang layak diperjuangkan dengan cara yang baik.
         </p>
-        <div class="question">Will you marry me? 💍</div>
+        <div class="question">Maukah kamu memberi aku kesempatan itu — untuk mengenalmu lebih dalam, menuju sesuatu yang serius dan bermakna? 🌸</div>
         
         <div class="buttons">
             <button id="btnYes" onclick="sheSaidYes()">Yes</button>
@@ -534,11 +538,12 @@
             container.innerHTML = `
                 <div class="bouquet-top" style="font-size: 3rem; margin-bottom: 5px;">💐</div>
                 <img src="https://drive.google.com/thumbnail?id=1E0mVqaw-_ogfe5B8Kxqa6scAmvfMYC1T&sz=w800" alt="Kita Berdua" class="couple-photo" style="margin-top: 10px;" onerror="this.onerror=null; this.src='https://placehold.co/300x400/ffdde1/d81b60?text=Foto+Kalian+Di+Sini';">
-                <p class="photo-caption" style="margin-bottom: 10px;">Saat ini jauhan dulu karena belum halal</p>
-                <h1 style="font-size: 3.5rem; margin-bottom: 10px;">Yeay! ❤️</h1>
-                <p style="font-size: 1.1rem; font-weight: 600; color: #d81b60; margin-bottom: 0;">
-                    Thank you for saying YES!<br><br>
-                    Let's build our beautiful future together. I love you! 🥰
+                <p class="photo-caption" style="margin-bottom: 10px;">Saat ini jauhan dulu, karena yang belum halal harus dijaga.</p>
+                <h1 style="font-size: 3rem; margin-bottom: 10px;">Alhamdulillah... 🤍</h1>
+                <p style="font-size: 1.05rem; font-weight: 500; color: #d81b60; margin-bottom: 0; line-height: 1.6;">
+                    Terima kasih sudah memberi aku kesempatan ini.<br><br>
+                    Mari kita gunakan waktu ini untuk tumbuh — masing-masing menjadi versi terbaik diri kita. Dan jika Allah mengizinkan, kita akan disandingkan bukan karena terburu-buru, tapi karena memang sudah siap.<br><br>
+                    <b>Bismillah, kita jaga ini dengan benar. ✨</b>
                 </p>
             `;
             
