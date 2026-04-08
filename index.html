@@ -176,6 +176,12 @@
             transition: opacity 1s ease 0.2s, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s; /* Transisi munculnya halaman utama */
         }
 
+        /* Div pembungkus (wrapper) khusus untuk efek transisi mulus saat klik Yes */
+        #contentWrapper {
+            width: 100%;
+            transition: opacity 0.6s ease;
+        }
+
         /* Gaya untuk desain buket bunga di atas */
         .bouquet-top {
             font-size: 4rem;
@@ -190,16 +196,17 @@
             50% { transform: translateY(-8px) rotate(3deg); }
         }
 
-        /* Gaya untuk foto yang diunggah */
+        /* Gaya untuk foto yang diunggah (Sudah ditambahkan frame & shadow) */
         .couple-photo {
             width: 100%;
             max-width: 260px; 
             height: 340px;
             object-fit: cover; 
             object-position: center; 
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 10px;
+            border-radius: 18px; /* Sudut lebih lembut */
+            border: 6px solid rgba(255, 255, 255, 0.95); /* Bingkai ala polaroid tipis */
+            box-shadow: 0 10px 25px rgba(216, 27, 96, 0.15); /* Shadow pink lembut */
+            margin-bottom: 15px;
         }
 
         /* Gaya untuk caption foto */
@@ -220,14 +227,19 @@
             line-height: 1.2;
         }
 
-        p.message {
-            color: #444;
-            font-size: 0.95rem; /* Disesuaikan sedikit agar teks panjang muat dengan rapi */
-            line-height: 1.6;
-            margin-bottom: 25px;
-            font-weight: 400;
-            text-align: center; 
+        .message-container {
+            text-align: center;
             width: 100%;
+            margin-bottom: 25px;
+        }
+
+        /* Teks sekarang memiliki line-height dan margin yang nyaman */
+        .message-paragraph {
+            color: #444;
+            font-size: 0.95rem; 
+            line-height: 1.8;
+            margin: 0 0 15px 0; /* Jarak antar paragraf */
+            font-weight: 400;
         }
 
         .question {
@@ -342,7 +354,7 @@
         @media (max-width: 480px) {
             .container { padding: 30px 20px; }
             h1 { font-size: 2.5rem; }
-            p.message { font-size: 0.9rem; line-height: 1.5; }
+            .message-paragraph { font-size: 0.9rem; line-height: 1.6; margin-bottom: 12px; }
             .question { font-size: 1.1rem; margin-bottom: 25px; }
             button { padding: 10px 25px; font-size: 1.1rem; }
             .couple-photo { max-width: 220px; height: 300px; }
@@ -357,7 +369,7 @@
     <!-- POPUP AWAL -->
     <div id="welcomePopup">
         <div class="popup-content">
-            <h2>Hai Cantik...</h2>
+            <h2>Hai, Wendy...</h2>
             <p>Apakah kamu sudah siap? ❤️</p>
             <button class="btn-start" onclick="startExperience()">Aku Siap! 💌</button>
         </div>
@@ -391,30 +403,37 @@
 
     <!-- Tambahkan class main-content-hidden di sini agar awalnya sembunyi -->
     <div class="container main-content-hidden" id="mainContainer">
-        <!-- Dekorasi Buket Bunga -->
-        <div class="bouquet-top">💐</div>
+        <!-- Wrapper ini berfungsi untuk animasi fade in / fade out saat klik tombol Yes -->
+        <div id="contentWrapper">
+            <!-- Dekorasi Buket Bunga -->
+            <div class="bouquet-top">💐</div>
 
-        <h1>Halo, Wendy Indira...</h1>
-        <p class="message">
-            Dulu kita satu almamater — tapi entah kenapa kita tidak pernah benar-benar bertemu. Mungkin memang belum waktunya. Dan sekarang, setelah waktu itu akhirnya datang, aku mulai mengerti kenapa.<br><br>
-            Belum lama kita saling mengenal. Tapi dalam waktu yang singkat itu, aku menemukan sesuatu yang sulit aku abaikan — cara kamu berbicara, cara kamu bersikap, sesuatu dalam dirimu yang membuat aku ingin terus mengenalmu lebih jauh.<br><br>
-            Aku tidak ingin sekadar hadir di harimu lalu pergi begitu saja. Aku datang dengan niat yang serius — bukan untuk bermain-main, tapi untuk mengenalmu dengan cara yang benar, menuju sesuatu yang halal dan diridhai Allah.<br><br>
-            Karena bagiku, kamu bukan sekadar seseorang yang menarik. Kamu adalah seseorang yang layak diperjuangkan dengan cara yang baik.
-        </p>
-        <div class="question">Maukah kamu memberi aku kesempatan itu — untuk mengenalmu lebih dalam, menuju sesuatu yang serius dan bermakna? 🌸</div>
-        
-        <div class="buttons">
-            <button id="btnYes" onclick="sheSaidYes()">Yes</button>
-            <button id="btnNo">No</button>
+            <h1>Halo, Wendy Indira...</h1>
+            <div class="message-container">
+                <p class="message-paragraph">Dulu kita satu almamater — tapi entah kenapa kita tidak pernah benar-benar bertemu. Mungkin memang belum waktunya. Dan sekarang, setelah waktu itu akhirnya datang, aku mulai mengerti kenapa.</p>
+                <p class="message-paragraph">Belum lama kita saling mengenal. Tapi dalam waktu yang singkat itu, aku menemukan sesuatu yang sulit aku abaikan — cara kamu berbicara, cara kamu bersikap, sesuatu dalam dirimu yang membuat aku ingin terus mengenalmu lebih jauh.</p>
+                <p class="message-paragraph">Aku tidak ingin sekadar hadir di harimu lalu pergi begitu saja. Aku datang dengan niat yang serius — bukan untuk bermain-main, tapi untuk mengenalmu dengan cara yang benar, menuju sesuatu yang halal dan diridhai Allah.</p>
+                <p class="message-paragraph">Karena bagiku, kamu bukan sekadar seseorang yang menarik. Kamu adalah seseorang yang layak diperjuangkan dengan cara yang baik.</p>
+            </div>
+            <div class="question">Maukah kamu memberi aku kesempatan itu — untuk mengenalmu lebih dalam, menuju sesuatu yang serius dan bermakna? 🌸</div>
+            
+            <div class="buttons">
+                <button id="btnYes" onclick="sheSaidYes()">Yes</button>
+                <button id="btnNo">No</button>
+            </div>
         </div>
     </div>
 
     <script>
         const btnNo = document.getElementById('btnNo');
         const container = document.getElementById('mainContainer');
+        const contentWrapper = document.getElementById('contentWrapper');
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
         let isMusicPlaying = false;
+
+        // Atur volume musik ke 100% (default) karena lagunya sudah halus
+        bgMusic.volume = 1.0;
 
         // FUNGSI UNTUK MEMULAI SEMUANYA SAAT TOMBOL DI POPUP DIKLIK
         function startExperience() {
@@ -434,13 +453,12 @@
 
             // 2. Animasi transisi yang lebih sinematik
             const popup = document.getElementById('welcomePopup');
-            const mainContainer = document.getElementById('mainContainer');
             
             // Tambahkan efek zoom in & fade out ke popup
             popup.classList.add('popup-fade-out');
             
             // Munculkan halaman utama dengan efek mengambang ke atas (hapus class hidden)
-            mainContainer.classList.remove('main-content-hidden');
+            container.classList.remove('main-content-hidden');
             
             // 3. Hapus popup dari DOM setelah transisi selesai agar tidak mengganggu klik di bawahnya
             setTimeout(() => {
@@ -533,27 +551,34 @@
         btnNo.addEventListener('touchstart', moveButton, {passive: false});
 
         function sheSaidYes() {
-            // Ubah tampilan saat tombol Yes diklik
-            const container = document.getElementById('mainContainer');
-            container.innerHTML = `
-                <div class="bouquet-top" style="font-size: 3rem; margin-bottom: 5px;">💐</div>
-                <img src="https://drive.google.com/thumbnail?id=1E0mVqaw-_ogfe5B8Kxqa6scAmvfMYC1T&sz=w800" alt="Kita Berdua" class="couple-photo" style="margin-top: 10px;" onerror="this.onerror=null; this.src='https://placehold.co/300x400/ffdde1/d81b60?text=Foto+Kalian+Di+Sini';">
-                <p class="photo-caption" style="margin-bottom: 10px;">Saat ini jauhan dulu, karena yang belum halal harus dijaga.</p>
-                <h1 style="font-size: 3rem; margin-bottom: 10px;">Alhamdulillah... 🤍</h1>
-                <p style="font-size: 1.05rem; font-weight: 500; color: #d81b60; margin-bottom: 0; line-height: 1.6;">
-                    Terima kasih sudah memberi aku kesempatan ini.<br><br>
-                    Mari kita gunakan waktu ini untuk tumbuh — masing-masing menjadi versi terbaik diri kita. Dan jika Allah mengizinkan, kita akan disandingkan bukan karena terburu-buru, tapi karena memang sudah siap.<br><br>
-                    <b>Bismillah, kita jaga ini dengan benar. ✨</b>
-                </p>
-            `;
+            // Memberikan efek fade out terlebih dahulu
+            contentWrapper.style.opacity = '0';
             
-            // Picu animasi hujan hati
-            startHeartAnimation();
+            // Menunggu transisi memudar (sekitar 0.5 detik), lalu mengganti isi konten
+            setTimeout(() => {
+                contentWrapper.innerHTML = `
+                    <div class="bouquet-top" style="font-size: 3rem; margin-bottom: 5px;">💐</div>
+                    <img src="https://drive.google.com/thumbnail?id=1E0mVqaw-_ogfe5B8Kxqa6scAmvfMYC1T&sz=w800" alt="Kita Berdua" class="couple-photo" style="margin-top: 10px;" onerror="this.onerror=null; this.src='https://placehold.co/300x400/ffdde1/d81b60?text=Foto+Kalian+Di+Sini';">
+                    <p class="photo-caption" style="margin-bottom: 10px;">Saat ini jauhan dulu, karena yang belum halal harus dijaga.</p>
+                    <h1 style="font-size: 3rem; margin-bottom: 10px;">Alhamdulillah... 🤍</h1>
+                    <p style="font-size: 1.05rem; font-weight: 500; color: #d81b60; margin-bottom: 0; line-height: 1.6;">
+                        Terima kasih sudah memberi aku kesempatan ini.<br><br>
+                        Mari kita gunakan waktu ini untuk tumbuh — masing-masing menjadi versi terbaik diri kita. Dan jika Allah mengizinkan, kita akan disandingkan bukan karena terburu-buru, tapi karena memang sudah siap.<br><br>
+                        <b>Bismillah, kita jaga ini dengan benar. ✨</b>
+                    </p>
+                `;
+                
+                // Memberikan efek fade in untuk konten baru
+                contentWrapper.style.opacity = '1';
+                
+                // Picu animasi hujan hati bersamaan dengan munculnya teks baru
+                startHeartAnimation();
+            }, 500);
         }
 
         // Fungsi untuk membuat animasi hati melayang saat dibilang YES
         function startHeartAnimation() {
-            const container = document.getElementById('heartsContainer');
+            const heartsContainer = document.getElementById('heartsContainer');
             const hearts = ['❤️', '💖', '💕', '🥰', '💍'];
             
             for(let i = 0; i < 40; i++) {
@@ -567,7 +592,7 @@
                     // Durasi dan delay animasi acak agar terlihat natural
                     heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
                     
-                    container.appendChild(heart);
+                    heartsContainer.appendChild(heart);
                     
                     // Hapus elemen setelah animasi selesai agar tidak memberatkan browser
                     setTimeout(() => {
