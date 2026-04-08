@@ -55,23 +55,12 @@
         }
 
         @keyframes floatParticle {
-            0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.5; }
-            100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+            0% { transform: translateY(10vh) translateX(0) rotate(0deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.8; }
+            50% { transform: translateY(-50vh) translateX(30px) rotate(180deg) scale(1.2); opacity: 0.6; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) translateX(-30px) rotate(360deg) scale(1); opacity: 0; }
         }
-
-        /* Varian ukuran, posisi, dan kecepatan untuk masing-masing partikel */
-        .bg-heart-particle:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; font-size: 1.5rem; }
-        .bg-heart-particle:nth-child(2) { left: 25%; animation-duration: 18s; animation-delay: 2s; font-size: 2.5rem; }
-        .bg-heart-particle:nth-child(3) { left: 40%; animation-duration: 15s; animation-delay: 4s; font-size: 1.2rem; }
-        .bg-heart-particle:nth-child(4) { left: 60%; animation-duration: 19s; animation-delay: 1s; font-size: 3rem; }
-        .bg-heart-particle:nth-child(5) { left: 75%; animation-duration: 14s; animation-delay: 5s; font-size: 2rem; }
-        .bg-heart-particle:nth-child(6) { left: 90%; animation-duration: 16s; animation-delay: 3s; font-size: 1.8rem; }
-        .bg-heart-particle:nth-child(7) { left: 50%; animation-duration: 13s; animation-delay: 6s; font-size: 2.2rem; }
-        .bg-heart-particle:nth-child(8) { left: 5%; animation-duration: 17s; animation-delay: 7s; font-size: 1.7rem; }
-        .bg-heart-particle:nth-child(9) { left: 85%; animation-duration: 11s; animation-delay: 1.5s; font-size: 1.4rem; }
-        .bg-heart-particle:nth-child(10) { left: 35%; animation-duration: 16s; animation-delay: 0.5s; font-size: 2.1rem; }
 
         /* GAYA UNTUK POPUP AWAL */
         #welcomePopup {
@@ -225,6 +214,19 @@
             margin-bottom: 15px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
             line-height: 1.2;
+            min-height: 4.5rem; /* Menjaga tinggi agar layout tidak lompat saat efek ketik berjalan */
+        }
+
+        /* Efek kursor mengetik */
+        .cursor {
+            display: inline-block;
+            animation: blink 0.7s infinite;
+            color: #d81b60;
+        }
+
+        @keyframes blink { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0; } 
         }
 
         .message-container {
@@ -376,17 +378,8 @@
     </div>
 
     <!-- Efek Dekorasi Background (Partikel Hati dan Bintang) -->
-    <div class="bg-decoration">
-        <div class="bg-heart-particle">🤍</div>
-        <div class="bg-heart-particle">✨</div>
-        <div class="bg-heart-particle">🤍</div>
-        <div class="bg-heart-particle">💖</div>
-        <div class="bg-heart-particle">✨</div>
-        <div class="bg-heart-particle">🤍</div>
-        <div class="bg-heart-particle">✨</div>
-        <div class="bg-heart-particle">🤍</div>
-        <div class="bg-heart-particle">💖</div>
-        <div class="bg-heart-particle">✨</div>
+    <div class="bg-decoration" id="bgDecoration">
+        <!-- Partikel akan di-generate otomatis oleh JavaScript agar lebih banyak dan estetik -->
     </div>
 
     <!-- Elemen Audio untuk Backsound -->
@@ -408,7 +401,7 @@
             <!-- Dekorasi Buket Bunga -->
             <div class="bouquet-top">💐</div>
 
-            <h1>Halo, Wendy Indira...</h1>
+            <h1><span id="typingText"></span><span class="cursor">|</span></h1>
             <div class="message-container">
                 <p class="message-paragraph">Dulu kita satu almamater — tapi entah kenapa kita tidak pernah benar-benar bertemu. Mungkin memang belum waktunya. Dan sekarang, setelah waktu itu akhirnya datang, aku mulai mengerti kenapa.</p>
                 <p class="message-paragraph">Belum lama kita saling mengenal. Tapi dalam waktu yang singkat itu, aku menemukan sesuatu yang sulit aku abaikan — cara kamu berbicara, cara kamu bersikap, sesuatu dalam dirimu yang membuat aku ingin terus mengenalmu lebih jauh.</p>
@@ -435,6 +428,59 @@
         // Atur volume musik ke 100% (default) karena lagunya sudah halus
         bgMusic.volume = 1.0;
 
+        // --- FUNGSI EFEK BACKGROUND PARTIKEL BANYAK ---
+        function createBackgroundParticles() {
+            const bgDecoration = document.getElementById('bgDecoration');
+            const particles = ['🤍', '✨', '💖', '🌸', '💫']; // Ditambah bunga dan kilauan
+            const particleCount = 45; // Jumlahnya diperbanyak secara drastis
+
+            for (let i = 0; i < particleCount; i++) {
+                let p = document.createElement('div');
+                p.classList.add('bg-heart-particle');
+                p.innerText = particles[Math.floor(Math.random() * particles.length)];
+                
+                // Randomisasi posisi, ukuran, dan kecepatan
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = (Math.random() * 20 + 10) + 's'; // 10s - 30s
+                p.style.animationDelay = (Math.random() * 20) + 's'; // Muncul bergantian
+                p.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; // 1rem - 2.5rem
+                
+                bgDecoration.appendChild(p);
+            }
+        }
+
+        // Jalankan fungsi pembuatan partikel saat halaman dimuat
+        createBackgroundParticles();
+
+        // --- FUNGSI EFEK MENGETIK OTOMATIS ---
+        const textToType = "Halo, Wendy Indira...";
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingTimeout;
+
+        function typeWriter() {
+            const typingElement = document.getElementById('typingText');
+            // Jika elemen sudah tidak ada (misal setelah klik YES), hentikan fungsi
+            if (!typingElement) return;
+
+            if (!isDeleting && charIndex <= textToType.length) {
+                // Mengetik maju
+                typingElement.innerHTML = textToType.substring(0, charIndex);
+                charIndex++;
+                typingTimeout = setTimeout(typeWriter, 150); // Kecepatan ketik
+            } else if (isDeleting && charIndex >= 0) {
+                // Menghapus mundur
+                typingElement.innerHTML = textToType.substring(0, charIndex);
+                charIndex--;
+                typingTimeout = setTimeout(typeWriter, 80); // Kecepatan hapus lebih cepat
+            } else {
+                // Berubah arah (Ketik <-> Hapus)
+                isDeleting = !isDeleting;
+                const delay = isDeleting ? 3000 : 800; // Jeda 3 detik setelah selesai ngetik, 0.8 detik sebelum ngetik ulang
+                typingTimeout = setTimeout(typeWriter, delay);
+            }
+        }
+
         // FUNGSI UNTUK MEMULAI SEMUANYA SAAT TOMBOL DI POPUP DIKLIK
         function startExperience() {
             // 1. Putar musik
@@ -459,6 +505,9 @@
             
             // Munculkan halaman utama dengan efek mengambang ke atas (hapus class hidden)
             container.classList.remove('main-content-hidden');
+            
+            // Mulai efek ketikan tulisan
+            setTimeout(typeWriter, 1000); // Mulai ngetik setelah transisi popup selesai
             
             // 3. Hapus popup dari DOM setelah transisi selesai agar tidak mengganggu klik di bawahnya
             setTimeout(() => {
@@ -551,6 +600,9 @@
         btnNo.addEventListener('touchstart', moveButton, {passive: false});
 
         function sheSaidYes() {
+            // Hentikan efek mengetik
+            clearTimeout(typingTimeout);
+
             // Memberikan efek fade out terlebih dahulu
             contentWrapper.style.opacity = '0';
             
