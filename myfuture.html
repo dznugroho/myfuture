@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untukmu, Wendy Indira</title>
+    <!-- Menggunakan font romantis dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px; /* Tambahan padding agar di layar kecil tidak mepet ke tepi */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffdde1; 
+            background-image: linear-gradient(135deg, rgba(255, 204, 213, 0.4) 0%, rgba(255, 154, 162, 0.6) 100%),
+                              url('https://images.unsplash.com/photo-1518199266791-5375a83164ba?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden; /* Mencegah scroll menyamping */
+            overflow-y: auto; /* Membiarkan scroll ke bawah JIKA layar HP sangat pendek */
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            max-width: 500px;
+            width: 100%; /* Dibuat 100% agar fleksibel dengan padding body */
+            position: relative; /* Ini penting agar tombol No terkurung di dalam sini */
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: auto; /* Memastikan posisinya selalu di tengah */
+        }
+
+        /* Gaya untuk desain buket bunga di atas */
+        .bouquet-top {
+            font-size: 4rem;
+            margin-top: -10px;
+            margin-bottom: -5px;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.15));
+            animation: float-bouquet 4s ease-in-out infinite;
+        }
+
+        @keyframes float-bouquet {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
+        }
+
+        /* Gaya untuk foto yang diunggah */
+        .couple-photo {
+            width: 100%;
+            max-width: 260px; 
+            height: 340px;
+            object-fit: cover; 
+            object-position: center; 
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+
+        /* Gaya untuk caption foto */
+        .photo-caption {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #d81b60;
+            font-size: 3rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+            line-height: 1.2;
+        }
+
+        p.message {
+            color: #444;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-align: center; /* Dibuat center agar lebih rapi di HP */
+            width: 100%;
+        }
+
+        .question {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: #d81b60;
+            margin-bottom: 35px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            min-height: 55px; /* Menjaga tata letak saat tombol No melayang */
+            width: 100%;
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s, left 0.3s ease, top 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+        }
+
+        #btnYes {
+            background-color: #d81b60;
+            color: white;
+            box-shadow: 0 6px 20px rgba(216, 27, 96, 0.4);
+            z-index: 2; /* Agar Yes selalu bisa diklik walau tertimpa */
+        }
+
+        #btnYes:hover {
+            transform: scale(1.08);
+            background-color: #c2185b;
+        }
+
+        #btnNo {
+            background-color: white;
+            color: #d81b60;
+            border: 2px solid #d81b60;
+            z-index: 3;
+            display: flex; /* Tambahan agar teks dan emoji sejajar rapi */
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Efek pop-up dan goyang untuk emoji ngejek */
+        .teasing-emoji {
+            display: inline-block;
+            font-size: 2.2rem; /* Ukuran emoji jauh lebih besar dari teks */
+            margin-left: 10px;
+            animation: popWiggle 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; /* Efek membal/bouncy */
+        }
+
+        @keyframes popWiggle {
+            0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+            40% { transform: scale(1.5) rotate(20deg); opacity: 1; }
+            60% { transform: scale(1) rotate(-15deg); }
+            80% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1.2) rotate(0deg); }
+        }
+
+        /* Animasi hati terbang */
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUp 4s ease-in infinite;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 1; }
+            100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+        }
+        
+        /* Gaya untuk Tombol Musik */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #d81b60;
+            color: #d81b60;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .music-btn.playing {
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Modifikasi Responsif untuk layar kecil (HP) */
+        @media (max-width: 480px) {
+            .container { padding: 30px 20px; }
+            h1 { font-size: 2.5rem; }
+            p.message { font-size: 0.95rem; line-height: 1.6; }
+            .question { font-size: 1.3rem; margin-bottom: 25px; }
+            button { padding: 10px 25px; font-size: 1.1rem; }
+            .couple-photo { max-width: 220px; height: 300px; }
+            .music-btn { bottom: 15px; right: 15px; width: 45px; height: 45px; font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Elemen Audio untuk Backsound -->
+    <!-- Ganti 'musik.mp3' dengan file musik romantis pilihanmu. Taruh filenya 1 folder dengan index.html ini -->
+    <audio id="bgMusic" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Tombol Kontrol Musik -->
+    <div id="musicBtn" class="music-btn" onclick="toggleMusic()" title="Play/Pause Music">🎵</div>
+
+    <!-- Elemen untuk animasi background (opsional) -->
+    <div id="heartsContainer"></div>
+
+    <div class="container" id="mainContainer">
+        <!-- Dekorasi Buket Bunga -->
+        <div class="bouquet-top">💐</div>
+
+        <h1>Halo Wendy Indira</h1>
+        <p class="message">
+            Di antara miliaran senyum di dunia, hanya milikmu yang membuat duniaku terasa sempurna.<br><br>
+            Aku tidak ingin lagi sekadar menjadi bagian dari harimu. Aku ingin menjadi rumah tempatmu pulang, untuk hari ini, esok, dan selamanya.
+        </p>
+        <div class="question">Will you marry me? 💍</div>
+        
+        <div class="buttons">
+            <button id="btnYes" onclick="sheSaidYes()">Yes</button>
+            <button id="btnNo">No</button>
+        </div>
+    </div>
+
+    <script>
+        const btnNo = document.getElementById('btnNo');
+        const container = document.getElementById('mainContainer');
+
+        // --- Bagian Kontrol Musik ---
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicBtn.classList.remove('playing');
+            } else {
+                bgMusic.play().catch(e => console.log("Audio belum siap:", e));
+                musicBtn.classList.add('playing');
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        // Memutar musik otomatis saat pertama kali layar disentuh/diklik
+        function playMusicOnInteract() {
+            if (!isMusicPlaying) {
+                bgMusic.play().catch(e => console.log(e));
+                musicBtn.classList.add('playing');
+                isMusicPlaying = true;
+            }
+            // Hapus event listener agar tidak bentrok
+            document.body.removeEventListener('click', playMusicOnInteract);
+            document.body.removeEventListener('touchstart', playMusicOnInteract);
+        }
+
+        document.body.addEventListener('click', playMusicOnInteract);
+        document.body.addEventListener('touchstart', playMusicOnInteract);
+        // ----------------------------
+
+        // Menyimpan koordinat terakhir agar bisa dihitung jarak lompatannya
+        let currentX = 0;
+        let currentY = 0;
+
+        // Kumpulan emoji ngejek
+        const teasingEmojis = ['😜', '😝', '🤪', '🤭', '🏃‍♂️💨', '🙈', '😛'];
+
+        // Fungsi untuk memindahkan tombol No ke posisi acak DI DALAM kotak putih
+        function moveButton(e) {
+            // Jika dipicu oleh touch, cegah aksi default agar tidak terklik
+            if(e && e.type === 'touchstart') e.preventDefault();
+
+            // Mencegah tombol Yes bergeser dengan menambahkan "placeholder" tak kasat mata
+            if (btnNo.style.position !== 'absolute') {
+                const placeholder = document.createElement('div');
+                placeholder.style.width = btnNo.offsetWidth + 'px';
+                placeholder.style.height = btnNo.offsetHeight + 'px';
+                btnNo.parentNode.insertBefore(placeholder, btnNo);
+            }
+
+            // Ubah posisi menjadi absolute agar bisa bergerak di dalam container
+            btnNo.style.position = 'absolute';
+
+            // Ubah teks tombol No dengan tambahan emot ngejek secara acak beserta efek animasinya
+            const randomEmoji = teasingEmojis[Math.floor(Math.random() * teasingEmojis.length)];
+            btnNo.innerHTML = `No <span class="teasing-emoji">${randomEmoji}</span>`;
+            
+            // Hitung ukuran area dalam kotak putih
+            const containerWidth = container.offsetWidth;
+            const containerHeight = container.offsetHeight;
+            
+            // Ukuran tombol (dihitung setelah teks diubah agar batasnya akurat)
+            const btnWidth = btnNo.offsetWidth;
+            const btnHeight = btnNo.offsetHeight;
+
+            // Batas gerak agar tombol tidak menabrak tepi (diberi padding 20px)
+            const padding = 20;
+            const maxX = containerWidth - btnWidth - padding;
+            const maxY = containerHeight - btnHeight - padding;
+
+            let randomX, randomY;
+            let distance = 0;
+            let attempts = 0;
+
+            // Loop untuk memaksa tombol lompat menjauh minimal 120px dari posisi saat ini
+            while (distance < 120 && attempts < 20) {
+                randomX = padding + Math.floor(Math.random() * (maxX - padding));
+                randomY = padding + Math.floor(Math.random() * (maxY - padding));
+                
+                // Kalkulasi jarak lompatan dari posisi sebelumnya
+                distance = Math.sqrt(Math.pow(randomX - currentX, 2) + Math.pow(randomY - currentY, 2));
+                attempts++;
+            }
+
+            // Update posisi saat ini ke posisi yang baru
+            currentX = randomX;
+            currentY = randomY;
+
+            // Terapkan posisi baru
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+        }
+
+        // Deteksi kursor mouse mendekat
+        btnNo.addEventListener('mouseover', moveButton);
+        
+        // Deteksi sentuhan (untuk pengguna HP/Tablet)
+        btnNo.addEventListener('touchstart', moveButton, {passive: false});
+
+        function sheSaidYes() {
+            // Ubah tampilan saat tombol Yes diklik
+            const container = document.getElementById('mainContainer');
+            container.innerHTML = `
+                <div class="bouquet-top" style="font-size: 3rem; margin-bottom: 5px;">💐</div>
+                <img src="https://drive.google.com/thumbnail?id=1E0mVqaw-_ogfe5B8Kxqa6scAmvfMYC1T&sz=w800" alt="Kita Berdua" class="couple-photo" style="margin-top: 10px;" onerror="this.onerror=null; this.src='https://placehold.co/300x400/ffdde1/d81b60?text=Foto+Kalian+Di+Sini';">
+                <p class="photo-caption" style="margin-bottom: 10px;">Saat ini jauhan dulu karena belum halal</p>
+                <h1 style="font-size: 3.5rem; margin-bottom: 10px;">Yeay! ❤️</h1>
+                <p style="font-size: 1.1rem; font-weight: 600; color: #d81b60; margin-bottom: 0;">
+                    Thank you for saying YES!<br><br>
+                    Let's build our beautiful future together. I love you! 🥰
+                </p>
+            `;
+            
+            // Picu animasi hujan hati
+            startHeartAnimation();
+        }
+
+        // Fungsi untuk membuat animasi hati melayang saat dibilang YES
+        function startHeartAnimation() {
+            const container = document.getElementById('heartsContainer');
+            const hearts = ['❤️', '💖', '💕', '🥰', '💍'];
+            
+            for(let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    // Pilih emoji acak
+                    heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                    // Posisi awal horizontal acak
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    // Durasi dan delay animasi acak agar terlihat natural
+                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    
+                    container.appendChild(heart);
+                    
+                    // Hapus elemen setelah animasi selesai agar tidak memberatkan browser
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000);
+                }, i * 150); // Munculkan satu per satu dengan jeda
+            }
+        }
+    </script>
+</body>
+</html>
