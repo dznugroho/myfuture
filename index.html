@@ -73,6 +73,89 @@
         .bg-heart-particle:nth-child(9) { left: 85%; animation-duration: 11s; animation-delay: 1.5s; font-size: 1.4rem; }
         .bg-heart-particle:nth-child(10) { left: 35%; animation-duration: 16s; animation-delay: 0.5s; font-size: 2.1rem; }
 
+        /* GAYA UNTUK POPUP AWAL */
+        #welcomePopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px); /* Bikin background belakang blur banget */
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Pastikan selalu paling atas */
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .popup-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(216, 27, 96, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 2px solid rgba(255, 204, 213, 0.8);
+            transform: scale(1);
+            animation: pulsePopup 2s infinite;
+        }
+
+        @keyframes pulsePopup {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* Class baru untuk transisi hilangnya popup (zoom in & fade out) */
+        .popup-fade-out {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: scale(1.2) !important;
+        }
+
+        /* Class baru untuk menyembunyikan halaman utama di awal */
+        .main-content-hidden {
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+            pointer-events: none;
+        }
+
+        .popup-content h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #d81b60;
+            font-size: 2.8rem;
+            margin: 0 0 10px 0;
+        }
+
+        .popup-content p {
+            font-family: 'Poppins', sans-serif;
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .btn-start {
+            background-color: #d81b60;
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 6px 20px rgba(216, 27, 96, 0.4);
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .btn-start:hover {
+            transform: scale(1.08);
+            background-color: #c2185b;
+        }
+
         .container {
             text-align: center;
             background: rgba(255, 255, 255, 0.6);
@@ -90,6 +173,7 @@
             flex-direction: column;
             align-items: center;
             margin: auto; /* Memastikan posisinya selalu di tengah */
+            transition: opacity 1s ease 0.2s, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s; /* Transisi munculnya halaman utama */
         }
 
         /* Gaya untuk desain buket bunga di atas */
@@ -261,10 +345,21 @@
             button { padding: 10px 25px; font-size: 1.1rem; }
             .couple-photo { max-width: 220px; height: 300px; }
             .music-btn { bottom: 15px; right: 15px; width: 45px; height: 45px; font-size: 1.2rem; }
+            .popup-content h2 { font-size: 2.3rem; }
+            .popup-content p { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
+
+    <!-- POPUP AWAL -->
+    <div id="welcomePopup">
+        <div class="popup-content">
+            <h2>Hai Cantik...</h2>
+            <p>Apakah kamu sudah siap? ❤️</p>
+            <button class="btn-start" onclick="startExperience()">Aku Siap! 💌</button>
+        </div>
+    </div>
 
     <!-- Efek Dekorasi Background (Partikel Hati dan Bintang) -->
     <div class="bg-decoration">
@@ -292,7 +387,8 @@
     <!-- Elemen untuk animasi background (opsional) -->
     <div id="heartsContainer"></div>
 
-    <div class="container" id="mainContainer">
+    <!-- Tambahkan class main-content-hidden di sini agar awalnya sembunyi -->
+    <div class="container main-content-hidden" id="mainContainer">
         <!-- Dekorasi Buket Bunga -->
         <div class="bouquet-top">💐</div>
 
@@ -312,12 +408,43 @@
     <script>
         const btnNo = document.getElementById('btnNo');
         const container = document.getElementById('mainContainer');
-
-        // --- Bagian Kontrol Musik ---
         const bgMusic = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
         let isMusicPlaying = false;
 
+        // FUNGSI UNTUK MEMULAI SEMUANYA SAAT TOMBOL DI POPUP DIKLIK
+        function startExperience() {
+            // 1. Putar musik
+            let playPromise = bgMusic.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    musicBtn.classList.add('playing');
+                    isMusicPlaying = true;
+                }).catch(error => {
+                    console.log("Autoplay dicegah:", error);
+                });
+            } else {
+                musicBtn.classList.add('playing');
+                isMusicPlaying = true;
+            }
+
+            // 2. Animasi transisi yang lebih sinematik
+            const popup = document.getElementById('welcomePopup');
+            const mainContainer = document.getElementById('mainContainer');
+            
+            // Tambahkan efek zoom in & fade out ke popup
+            popup.classList.add('popup-fade-out');
+            
+            // Munculkan halaman utama dengan efek mengambang ke atas (hapus class hidden)
+            mainContainer.classList.remove('main-content-hidden');
+            
+            // 3. Hapus popup dari DOM setelah transisi selesai agar tidak mengganggu klik di bawahnya
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 800);
+        }
+
+        // --- Bagian Kontrol Musik Manual ---
         function toggleMusic() {
             if (isMusicPlaying) {
                 bgMusic.pause();
@@ -330,31 +457,6 @@
                 }).catch(e => console.log("Audio belum siap atau diblokir:", e));
             }
         }
-
-        // Memutar musik otomatis saat pertama kali layar disentuh/diklik
-        function playMusicOnInteract() {
-            if (!isMusicPlaying) {
-                // Menggunakan Promise agar state icon tersinkronisasi dengan musik aslinya
-                let playPromise = bgMusic.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        // Jika musik SUKSES berbunyi, baru putar iconnya
-                        musicBtn.classList.add('playing');
-                        isMusicPlaying = true;
-                    }).catch(error => {
-                        // Jika musik DIBLOKIR oleh HP, jangan putar iconnya
-                        console.log("Autoplay dicegah browser HP:", error);
-                    });
-                }
-            }
-            // Hapus event listener agar tidak bentrok
-            document.body.removeEventListener('click', playMusicOnInteract);
-            document.body.removeEventListener('touchstart', playMusicOnInteract);
-        }
-
-        document.body.addEventListener('click', playMusicOnInteract);
-        document.body.addEventListener('touchstart', playMusicOnInteract);
         // ----------------------------
 
         // Menyimpan koordinat terakhir agar bisa dihitung jarak lompatannya
@@ -366,9 +468,6 @@
 
         // Fungsi untuk memindahkan tombol No ke posisi acak DI DALAM kotak putih
         function moveButton(e) {
-            // Paksa coba putar musik juga saat tombol No dikejar/disentuh (berjaga-jaga jika diblokir di awal)
-            if (!isMusicPlaying) playMusicOnInteract();
-
             // Jika dipicu oleh touch, cegah aksi default agar tidak terklik
             if(e && e.type === 'touchstart') e.preventDefault();
 
