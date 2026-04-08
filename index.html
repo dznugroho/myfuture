@@ -18,17 +18,60 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffdde1; 
-            background-image: linear-gradient(135deg, rgba(255, 204, 213, 0.4) 0%, rgba(255, 154, 162, 0.6) 100%),
-                              url('https://images.unsplash.com/photo-1518199266791-5375a83164ba?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+            /* Latar belakang gradasi animasi yang tidak akan pernah terlihat polos */
+            background: linear-gradient(-45deg, #ffdde1, #ee9ca7, #ffc3a0, #ffafbd);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden; /* Mencegah scroll menyamping */
             overflow-y: auto; /* Membiarkan scroll ke bawah JIKA layar HP sangat pendek */
         }
+
+        /* Animasi untuk latar belakang yang selalu bergerak */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Efek partikel hati yang beterbangan di background */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Agar tidak mengganggu klik tombol */
+            z-index: 1; /* Di bawah container utama */
+            overflow: hidden;
+        }
+
+        .bg-heart-particle {
+            position: absolute;
+            bottom: -10vh;
+            color: rgba(255, 255, 255, 0.5); /* Warna putih transparan */
+            font-size: 2rem;
+            animation: floatParticle 15s linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+
+        /* Varian ukuran, posisi, dan kecepatan untuk masing-masing partikel */
+        .bg-heart-particle:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; font-size: 1.5rem; }
+        .bg-heart-particle:nth-child(2) { left: 25%; animation-duration: 18s; animation-delay: 2s; font-size: 2.5rem; }
+        .bg-heart-particle:nth-child(3) { left: 40%; animation-duration: 15s; animation-delay: 4s; font-size: 1.2rem; }
+        .bg-heart-particle:nth-child(4) { left: 60%; animation-duration: 19s; animation-delay: 1s; font-size: 3rem; }
+        .bg-heart-particle:nth-child(5) { left: 75%; animation-duration: 14s; animation-delay: 5s; font-size: 2rem; }
+        .bg-heart-particle:nth-child(6) { left: 90%; animation-duration: 16s; animation-delay: 3s; font-size: 1.8rem; }
+        .bg-heart-particle:nth-child(7) { left: 50%; animation-duration: 13s; animation-delay: 6s; font-size: 2.2rem; }
+        .bg-heart-particle:nth-child(8) { left: 5%; animation-duration: 17s; animation-delay: 7s; font-size: 1.7rem; }
+        .bg-heart-particle:nth-child(9) { left: 85%; animation-duration: 11s; animation-delay: 1.5s; font-size: 1.4rem; }
+        .bg-heart-particle:nth-child(10) { left: 35%; animation-duration: 16s; animation-delay: 0.5s; font-size: 2.1rem; }
 
         .container {
             text-align: center;
@@ -223,6 +266,20 @@
 </head>
 <body>
 
+    <!-- Efek Dekorasi Background (Partikel Hati dan Bintang) -->
+    <div class="bg-decoration">
+        <div class="bg-heart-particle">🤍</div>
+        <div class="bg-heart-particle">✨</div>
+        <div class="bg-heart-particle">🤍</div>
+        <div class="bg-heart-particle">💖</div>
+        <div class="bg-heart-particle">✨</div>
+        <div class="bg-heart-particle">🤍</div>
+        <div class="bg-heart-particle">✨</div>
+        <div class="bg-heart-particle">🤍</div>
+        <div class="bg-heart-particle">💖</div>
+        <div class="bg-heart-particle">✨</div>
+    </div>
+
     <!-- Elemen Audio untuk Backsound -->
     <!-- Ganti 'musik.mp3' dengan file musik romantis pilihanmu. Taruh filenya 1 folder dengan index.html ini -->
     <audio id="bgMusic" loop>
@@ -265,19 +322,31 @@
             if (isMusicPlaying) {
                 bgMusic.pause();
                 musicBtn.classList.remove('playing');
+                isMusicPlaying = false;
             } else {
-                bgMusic.play().catch(e => console.log("Audio belum siap:", e));
-                musicBtn.classList.add('playing');
+                bgMusic.play().then(() => {
+                    musicBtn.classList.add('playing');
+                    isMusicPlaying = true;
+                }).catch(e => console.log("Audio belum siap atau diblokir:", e));
             }
-            isMusicPlaying = !isMusicPlaying;
         }
 
         // Memutar musik otomatis saat pertama kali layar disentuh/diklik
         function playMusicOnInteract() {
             if (!isMusicPlaying) {
-                bgMusic.play().catch(e => console.log(e));
-                musicBtn.classList.add('playing');
-                isMusicPlaying = true;
+                // Menggunakan Promise agar state icon tersinkronisasi dengan musik aslinya
+                let playPromise = bgMusic.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Jika musik SUKSES berbunyi, baru putar iconnya
+                        musicBtn.classList.add('playing');
+                        isMusicPlaying = true;
+                    }).catch(error => {
+                        // Jika musik DIBLOKIR oleh HP, jangan putar iconnya
+                        console.log("Autoplay dicegah browser HP:", error);
+                    });
+                }
             }
             // Hapus event listener agar tidak bentrok
             document.body.removeEventListener('click', playMusicOnInteract);
@@ -297,6 +366,9 @@
 
         // Fungsi untuk memindahkan tombol No ke posisi acak DI DALAM kotak putih
         function moveButton(e) {
+            // Paksa coba putar musik juga saat tombol No dikejar/disentuh (berjaga-jaga jika diblokir di awal)
+            if (!isMusicPlaying) playMusicOnInteract();
+
             // Jika dipicu oleh touch, cegah aksi default agar tidak terklik
             if(e && e.type === 'touchstart') e.preventDefault();
 
